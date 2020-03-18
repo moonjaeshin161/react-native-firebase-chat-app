@@ -1,8 +1,12 @@
-import React from 'react';
-import { NavigationContainer, createSwitchNavigator } from '@react-navigation/native';
-import LoadingScreen from './screens/LoadingScreen';
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import * as firebase from 'firebase';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import LoadingScreen from './screens/LoadingScreen';
 
 var firebaseConfig = {
   apiKey: "AIzaSyDqTN0pHrLVHHPsKZ9dZyd8bd-tsRp0gd0",
@@ -17,9 +21,28 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+
+
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const Stack = createStackNavigator();
   return (
-    <LoadingScreen />
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <Stack.Screen name="Home" component={HomeScreen} />
+        ) : (
+            <>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name='Loading' component={LoadingScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          )}
+
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
